@@ -1,10 +1,13 @@
 const MainTopicModel = require('../model/mainTopicModel');
+const CourseModel = require('../model/courseModel')
+const mongoose =require("mongoose")
+var id_1;
 
 
 //create mainTopic of the course
 //post
 //private
-const createMainTopic = async (req, res) => {
+const createMainTopic = async (req, res, next) => {
 
     const title = req.body.title;
     const course_id = req.body.course_id;
@@ -14,36 +17,85 @@ const createMainTopic = async (req, res) => {
         course_id: course_id
     })
 
-    res.send(mainTopic);
+    if(mainTopic){
+         id_1 =  mainTopic._id;
+         console.log(id_1)
+        // res.json(mainTopic);
+    }
+
+    // res.send(mainTopic);
+
    
+    next();
 }
+
+
+
+
+
+//update mainTopic_id after createing the mainTopic
+//put
+//private
+const updateMainTopic_id = (req, res, next) => {
+    const id = req.params.id
+    const mainTopic_id = id_1;
+    console.log(mainTopic_id)
+
+
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        // Find the document by ID and update the array input field
+        CourseModel.findByIdAndUpdate(id, { $set: { mainTopic_id: mainTopic_id } }, { new: true })
+            .then((data) => {
+                if (!data) {
+                    return res.status(404).json({ message: `Data with ID ${id} not found.` });
+                }
+
+                res.json(data);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).json({ message: 'Failed to update mainTopic_id.' });
+            });
+    } else { return res.status(404).send('No client with that id') }
+}
+
+
+
+
+
 
 
 //update subTopic_id after createing the subTopic
 //put
 //private
-const updateSubTopic_id = (req, res) => {
+const updateSubTopic_id = async (req, res) => {
+
     const id = req.params.id;
     const subTopic_id = req.body.subTopic_id;
   
     // Find the document by ID and update the array input field
-    MainTopicModel.findByIdAndUpdate(id, { $set: { subTopic_id: subTopic_id } }, { new: true })
+    await MainTopicModel.findByIdAndUpdate(id, { $set: { subTopic_id: subTopic_id } }, { new: true })
       .then((data) => {
         if (!data) {
           return res.status(404).json({ message: `Data with ID ${id} not found.` });
+        }else{
+            req.header = 
+            res.json(data);
         }
   
-        res.json(data);
+      
       })
       .catch((err) => {
         console.error(err);
         res.status(500).json({ message: 'Failed to update subTopic_id.' });
       });
+
   }
 
 
 
 module.exports = {
     createMainTopic: createMainTopic,
-    updateSubTopic_id:updateSubTopic_id
+    updateSubTopic_id:updateSubTopic_id,
+    updateMainTopic_id:updateMainTopic_id
 };

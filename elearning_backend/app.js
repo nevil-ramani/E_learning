@@ -4,6 +4,7 @@ var cors = require('cors');
 const connectDB = require('./config/connectDB');
 const dotenv = require('dotenv')
 const morgan = require('morgan')
+const mongoose = require('mongoose')
 //multer
 const multer = require("multer");
 const path = require('path');
@@ -17,7 +18,16 @@ const app = express();
 app.use(express.json());
 
 //database connection
-connectDB();
+// connectDB();
+mongoose.connect(process.env.DATABASE_LINK, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: 'E_Learning'
+}).then(() => {
+    console.log('Database Connection is ready...')
+}).catch((err) => {
+    console.log(err);
+})
 
 //.env
 dotenv.config()
@@ -44,9 +54,9 @@ const subTopicController = require("./controllers/subTopicController");
 // routing
 app.get('/courses', courseController.fetchCourses)
 app.post('/course', courseController.createCourse)
-app.put('/update_maintopic_id/:id',courseController.updateMainTopic_id)
+app.put('/update_maintopic_id/:id', courseController.updateMainTopic_id)
 
-app.post('/maintopic', mainTopicController.createMainTopic)
+app.post('/maintopic/:id', mainTopicController.createMainTopic, mainTopicController.updateMainTopic_id)
 app.put('/update_subtopic_id/:id', mainTopicController.updateSubTopic_id)
 
 app.post('/subtopic', subTopicController.createSubTopic)
