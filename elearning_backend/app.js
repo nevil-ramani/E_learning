@@ -1,3 +1,9 @@
+const express = require("express");
+var bodyParser = require('body-parser');
+var cors = require('cors');
+const connectDB = require('./config/connectDB');
+const dotenv = require('dotenv')
+const morgan = require('morgan')
 //multer
 const multer = require("multer");
 const path = require('path');
@@ -5,50 +11,50 @@ const upload = require('./middleware/multer');
 
 
 //express
-const express = require("express");
 const app = express();
 
 //configure express app 
 app.use(express.json());
 
-
-app.use(upload);
-
-//API
-const mainCouseFormController = require('./controllers/mainCouseFormController');
-const sectionController = require('./controllers/sectionController')
-const contentController = require('./controllers/contentController')
-
-//body-parser
-var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-const morgan = require('morgan')
-app.use(morgan('tiny'));
-
-//.env
-require('dotenv').config()
-
-
 //database connection
-const connectDB = require('./config/connectDB');
 connectDB();
 
+//.env
+dotenv.config()
+
+
+/////////middleware//////////
+//multer
+app.use(upload);
+//body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+//morgan
+app.use(morgan('tiny'));
 //cross-origin sharing standard
-var cors = require('cors');
-const { updateSubSectionID } = require("./controllers/mainCouseFormController");
 app.use(cors())
 
-// routing
-app.get('/mainform', mainCouseFormController.fetchMainforms)
-app.post('/mainform', mainCouseFormController.createMainForm)
-app.put('/mainform/:id', mainCouseFormController.updateSubSectionID) 
 
-app.post('/section', sectionController.createSection)
+//Controller
+const contentController = require('./controllers/contentController')
+const courseController = require('./controllers/courseController')
+const mainTopicController = require("./controllers/mainTopicController");
+const subTopicController = require("./controllers/subTopicController");
+
+// routing
+app.get('/courses', courseController.fetchCourses)
+app.post('/course', courseController.createCourse)
+app.put('/update_maintopic_id/:id',courseController.updateMainTopic_id)
+
+app.post('/maintopic', mainTopicController.createMainTopic)
+app.put('/update_subtopic_id/:id', mainTopicController.updateSubTopic_id)
+
+app.post('/subtopic', subTopicController.createSubTopic)
+app.put('/update_content_id/:id', subTopicController.createSubTopic)
 
 app.post('/content', contentController.createContent)
-app.put('/content/:id', contentController.updateContent) 
+app.put('/update_content/:id', contentController.updateContent)
+
 
 
 // server start

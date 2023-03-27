@@ -1,62 +1,47 @@
 const ContentModel = require('../model/contentModel');
 
 
-// const fetchMainforms = async (req,res) => {
-//     const mainCourseForm = await MainCourseForm.find();
-
-//     res.send(mainCourseForm);
-// }
-
-// const fetchNote = async(req,res) => {
-//     const id = req.params.id;
-//     const note = MainCourseForm.findById(id);
-
-//     res.send(note);
-// }
-
 const createContent = async (req, res) => {
 
     // {
-    //     "content": "title"
+    //     "content": [{"title":"title","videoUrl":"videoUrl"}]
     // }
 
-    //get data from request body
     const content = req.body.content;
     
 
-    //create note with it
-
-    const contentForm = await ContentModel.create({
+    const contentData = await ContentModel.create({
         content: content,
 
     })
 
-    //respond with the new note
-    res.send(contentForm);
+    res.send(contentData);
 }
 
-const updateContent = async(req, res) => {
 
-    // {
-        
-    //     "section_id": ["sub7","sub8"]
-      
-    // }
-    
+
+//update content array when add new content
+//put
+//private
+const updateContent = (req, res) => {
     const id = req.params.id;
-    // const sub_section_id = async () =>  {await MainCourseForm.findById(id);}
-    // console.log(sub_section_id);
-   
-    const content = req.body.content;
+    const content_id = req.body.content_id;
+  
+    // Find the document by ID and update the array input field
+    SubTopicModel.findByIdAndUpdate(id, { $set: { content: content } }, { new: true })
+      .then((data) => {
+        if (!data) {
+          return res.status(404).json({ message: `Data with ID ${id} not found.` });
+        }
+  
+        res.json(data);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ message: 'Failed to update content_id.' });
+      });
+  }
 
-    const updated_content = await ContentModel.findByIdAndUpdate(id,{content: content}
-        
-
-        
-    ,{ new :true})
-    
-    res.send(updated_content);
-}
 
 
 module.exports = {

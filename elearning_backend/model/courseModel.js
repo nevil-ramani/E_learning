@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const mainCourseForm = new mongoose.Schema({
+const courseSchema = new mongoose.Schema({
     title: String,
     thumbnail: String,
     price: Number,
     tutor_name: String,
-    section_id: {
+    mainTopic_id: {
         type: mongoose.Schema.Types.Array,
-        ref: 'sectionmodels'
+        // ref: ''
        },
     is_featured: Boolean,
     is_approved: Boolean,
@@ -18,8 +18,8 @@ const mainCourseForm = new mongoose.Schema({
 
   });
 
-  const MainCourseForm = mongoose.model('MainCourseForm', mainCourseForm);
+  const Course = mongoose.model('Course', courseSchema);
 
 
 
-module.exports = MainCourseForm;
+module.exports = Course;
