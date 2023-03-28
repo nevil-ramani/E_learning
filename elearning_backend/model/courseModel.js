@@ -9,6 +9,7 @@ const courseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Array,
         // ref: ''
        },
+    // mainTopic_id: Array,
     is_featured: Boolean,
     is_approved: Boolean,
     createdAt: {

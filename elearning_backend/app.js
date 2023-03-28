@@ -56,7 +56,7 @@ app.get('/courses', courseController.fetchCourses)
 app.post('/course', courseController.createCourse)
 app.put('/update_maintopic_id/:id', courseController.updateMainTopic_id)
 
-app.post('/maintopic/:id', mainTopicController.createMainTopic, mainTopicController.updateMainTopic_id)
+app.post('/maintopic/:id', mainTopicController.createMainTopic, mainTopicController.fetchMainTopic_id, mainTopicController.updateMainTopic_id)
 app.put('/update_subtopic_id/:id', mainTopicController.updateSubTopic_id)
 
 app.post('/subtopic', subTopicController.createSubTopic)

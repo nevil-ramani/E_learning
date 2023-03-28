@@ -2,6 +2,7 @@ const MainTopicModel = require('../model/mainTopicModel');
 const CourseModel = require('../model/courseModel')
 const mongoose =require("mongoose")
 var id_1;
+var arrayOFmaintopic_id = [];
 
 
 //create mainTopic of the course
@@ -32,19 +33,31 @@ const createMainTopic = async (req, res, next) => {
 
 
 
+const fetchMainTopic_id = async (req, res, next) =>{
+
+    const id = req.params.id
+    
+     data = await CourseModel.findById(id)
+  
+    arrayOFmaintopic_id = [...data.mainTopic_id,id_1]
+    
+
+    next()
+}
+
+
+
+
 
 //update mainTopic_id after createing the mainTopic
 //put
 //private
 const updateMainTopic_id = (req, res, next) => {
     const id = req.params.id
-    const mainTopic_id = id_1;
-    console.log(mainTopic_id)
-
-
+    
     if (mongoose.Types.ObjectId.isValid(id)) {
         // Find the document by ID and update the array input field
-        CourseModel.findByIdAndUpdate(id, { $set: { mainTopic_id: mainTopic_id } }, { new: true })
+        CourseModel.findByIdAndUpdate(id, { $set: { mainTopic_id: arrayOFmaintopic_id } }, { new: true })
             .then((data) => {
                 if (!data) {
                     return res.status(404).json({ message: `Data with ID ${id} not found.` });
@@ -97,5 +110,6 @@ const updateSubTopic_id = async (req, res) => {
 module.exports = {
     createMainTopic: createMainTopic,
     updateSubTopic_id:updateSubTopic_id,
-    updateMainTopic_id:updateMainTopic_id
+    updateMainTopic_id:updateMainTopic_id,
+    fetchMainTopic_id:fetchMainTopic_id
 };
