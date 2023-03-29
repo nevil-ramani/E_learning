@@ -50,6 +50,7 @@ const contentController = require('./controllers/contentController')
 const courseController = require('./controllers/courseController')
 const mainTopicController = require("./controllers/mainTopicController");
 const subTopicController = require("./controllers/subTopicController");
+const userController = require('./controllers/userController')
 
 // routing
 app.get('/courses', courseController.fetchCourses)
@@ -65,6 +66,14 @@ app.put('/update_content_id/:id', subTopicController.createSubTopic)
 app.post('/content', contentController.createContent)
 app.put('/update_content/:id', contentController.updateContent)
 
+
+app.get('/alluser', userController.getallUsers)
+app.get('/user/:id', userController.getUser)
+app.put('/updateuser/:id', userController.updateUser)
+app.post('/login', userController.loginUser)
+app.post('/register', userController.registerUser)
+app.delete('/deleteuser/:id', userController.deleteUser)
+app.get('/get/count', userController.totelUser)
 
 
 // server start
