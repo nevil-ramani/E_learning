@@ -78,38 +78,9 @@ const updateMainTopic_id = (req, res, next) => {
 
 
 
-//update subTopic_id after createing the subTopic
-//put
-//private
-const updateSubTopic_id = async (req, res) => {
-
-    const id = req.params.id;
-    const subTopic_id = req.body.subTopic_id;
-  
-    // Find the document by ID and update the array input field
-    await MainTopicModel.findByIdAndUpdate(id, { $set: { subTopic_id: subTopic_id } }, { new: true })
-      .then((data) => {
-        if (!data) {
-          return res.status(404).json({ message: `Data with ID ${id} not found.` });
-        }else{
-            req.header = 
-            res.json(data);
-        }
-  
-      
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: 'Failed to update subTopic_id.' });
-      });
-
-  }
-
-
 
 module.exports = {
     createMainTopic: createMainTopic,
-    updateSubTopic_id:updateSubTopic_id,
     updateMainTopic_id:updateMainTopic_id,
     fetchMainTopic_id:fetchMainTopic_id
 };

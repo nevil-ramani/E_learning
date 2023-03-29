@@ -1,23 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import loginStore from '../stores/loginStore';
+
+// const cookieParser = require('cookie-parser');
 
 import { useForm } from "react-hook-form";
 const Login = () => {
+
+  const store = loginStore();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data) =>  {
     axios.post('http://localhost:3001/login', data)
     .then(function (response) {
-      console.log(response);
+      console.log(response.data);
+      store.loginSubmit(response.data);
+
+
+      // res.cookie('token', response.data.token, {
+      //   httpOnly: true,
+      //   // secure: true // set to true in production
+      // });
+      
     })
     .catch(function (error) {
       console.log(error);
     });
     console.log(data)};
+
   return (
     <>
       <div className="mt-10 mb-10">

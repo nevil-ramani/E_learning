@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
     const [navbar, setNavbar] = useState(false);
 
+
     return (
-        <nav className="w-full text-white transition-colors duration-200 transform bg-indigo-800  hover:bbg-indigo-900 focus:outline-none shadow">
+        <nav className="w-full text-white transition-colors duration-200 transform bg-slate-800  hover:bbg-indigo-900 focus:outline-none shadow">
             <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8">
                 <div>
                     <div className="flex items-center justify-between py-3 md:py-5 md:block">
@@ -51,6 +52,8 @@ export default function Navbar() {
                     </div>
                 </div>
                 <div>
+
+               
                     <div
                         className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar ? "block" : "hidden"
                             }`}
@@ -85,7 +88,9 @@ export default function Navbar() {
                             </Link>
                         </div>
                     </div>
+
                 </div>
+                        
                 <div className="hidden space-x-2 md:inline-block">
                     <Link
                         to="/Login"

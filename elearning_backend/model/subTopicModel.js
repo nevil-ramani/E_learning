@@ -8,7 +8,7 @@ const subTopicSchema = mongoose.Schema({
    },
 
    content_id: {
-    type: mongoose.Schema.Types.Array,
+    type: mongoose.Schema.Types.ObjectId,
     // ref: ''
    },
 

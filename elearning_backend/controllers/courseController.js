@@ -2,7 +2,7 @@ const CourseModel = require('../model/courseModel');
 const upload = require('../middleware/multer')
 const path = require('path');
 const mongoose =require("mongoose")
-var id_1 = require("./mainTopicController").id_1
+// var id_1 = require("./mainTopicController").id_1
 
 
 
@@ -64,32 +64,34 @@ const createCourse = async (req, res) => {
 //update mainTopic_id after createing the mainTopic
 //put
 //private
-const updateMainTopic_id = (req, res, next) => {
-    const id = req.params.id
-    const mainTopic_id = id_1;
-    console.log(mainTopic_id)
 
 
-    if (mongoose.Types.ObjectId.isValid(id)) {
-        // Find the document by ID and update the array input field
-        CourseModel.findByIdAndUpdate(id, { $set: { mainTopic_id: mainTopic_id } }, { new: true })
-            .then((data) => {
-                if (!data) {
-                    return res.status(404).json({ message: `Data with ID ${id} not found.` });
-                }
+// const updateMainTopic_id = (req, res, next) => {
+//     const id = req.params.id
+//     const mainTopic_id = id_1;
+//     console.log(mainTopic_id)
 
-                res.json(data);
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).json({ message: 'Failed to update mainTopic_id.' });
-            });
-    } else { return res.status(404).send('No client with that id') }
-}
+
+//     if (mongoose.Types.ObjectId.isValid(id)) {
+//         // Find the document by ID and update the array input field
+//         CourseModel.findByIdAndUpdate(id, { $set: { mainTopic_id: mainTopic_id } }, { new: true })
+//             .then((data) => {
+//                 if (!data) {
+//                     return res.status(404).json({ message: `Data with ID ${id} not found.` });
+//                 }
+
+//                 res.json(data);
+//             })
+//             .catch((err) => {
+//                 console.error(err);
+//                 res.status(500).json({ message: 'Failed to update mainTopic_id.' });
+//             });
+//     } else { return res.status(404).send('No client with that id') }
+// }
 
 
 module.exports = {
     fetchCourses: fetchCourses,
     createCourse: createCourse,
-    updateMainTopic_id: updateMainTopic_id
+    // updateMainTopic_id: updateMainTopic_id
 }

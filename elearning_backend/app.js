@@ -55,16 +55,16 @@ const userController = require('./controllers/userController')
 // routing
 app.get('/courses', courseController.fetchCourses)
 app.post('/course', courseController.createCourse)
-app.put('/update_maintopic_id/:id', courseController.updateMainTopic_id)
+// app.put('/update_maintopic_id/:id', courseController.updateMainTopic_id)
 
 app.post('/maintopic/:id', mainTopicController.createMainTopic, mainTopicController.fetchMainTopic_id, mainTopicController.updateMainTopic_id)
-app.put('/update_subtopic_id/:id', mainTopicController.updateSubTopic_id)
+// app.put('/update_subtopic_id/:id', mainTopicController.updateSubTopic_id)
 
-app.post('/subtopic', subTopicController.createSubTopic)
-app.put('/update_content_id/:id', subTopicController.createSubTopic)
+app.post('/subtopic/:id', subTopicController.createSubTopic, subTopicController.fetchSubTopic_id, subTopicController.updateSubTopic_id)
+// app.put('/update_content_id/:id', subTopicController.createSubTopic)
 
-app.post('/content', contentController.createContent)
-app.put('/update_content/:id', contentController.updateContent)
+app.post('/content/:id', contentController.createContent, contentController.updateContent_id)
+app.put('/update_content/:id', contentController.fetchContent, contentController.updateContent)
 
 
 app.get('/alluser', userController.getallUsers)
@@ -74,6 +74,63 @@ app.post('/login', userController.loginUser)
 app.post('/register', userController.registerUser)
 app.delete('/deleteuser/:id', userController.deleteUser)
 app.get('/get/count', userController.totelUser)
+
+
+
+
+
+
+
+
+
+
+// Configure multer to handle file uploads
+const vidstorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    const filename = file.fieldname + Math.floor((Math.random() * 100) + 1) + Date.now() + path.extname(file.originalname); //file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, filename);
+  }
+});
+
+const uploadvideo = multer({ storage: vidstorage });
+
+
+// Define a schema for videos
+const videoSchema = new mongoose.Schema({
+  filename: String,
+  date: { type: Date, default: Date.now }
+});
+
+const Video = mongoose.model('Video', videoSchema);
+
+// Define a route for uploading videos
+app.post('/uploadvideo', uploadvideo.single('video'), (req, res) => {
+  const { filename } = req.file;
+
+  const video = new Video({
+    filename
+  });
+
+  video.save()
+    .then(() => {
+      res.status(201).json({ message: 'Video uploaded successfully.' });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: 'Failed to upload video.' });
+    });
+});
+
+// Start the server
+// app.listen(3000, () => {
+//   console.log('Server started on port 3000.');
+// });
+
+
+
 
 
 // server start

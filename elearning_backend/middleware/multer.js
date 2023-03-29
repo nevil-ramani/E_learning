@@ -1,10 +1,11 @@
 const multer = require("multer");
 const path = require('path');
+// const pub = require('../../elearning_frontend/public/image')
 
 
 const storage = multer.diskStorage( {
     destination: (req, file, cb) => {
-        cb(null, 'public')
+        cb(null, 'public/image')
     },
     filename: (req, file, cb) => {
         const filename = file.fieldname + Math.floor((Math.random() * 100) + 1) + Date.now() + path.extname(file.originalname); //file.originalname.toLowerCase().split(' ').join('-');

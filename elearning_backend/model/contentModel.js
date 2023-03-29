@@ -1,4 +1,5 @@
 
+
 const mongoose = require('mongoose');
 
 const contentSchema = new mongoose.Schema({
@@ -6,7 +7,8 @@ const contentSchema = new mongoose.Schema({
    content: [Object],
 
   course_id: {
-   type: mongoose.Schema.Types.ObjectId,
+   type: mongoose.Schema.Types.String,
+   default:""
    // ref: ''
 
   },
