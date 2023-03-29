@@ -2,6 +2,7 @@ const UserModel = require('../model/userModel');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 
 //users list
@@ -73,12 +74,19 @@ const loginUser =  async (req,res) => {
             {
                 userId: user.id,
                 isAdmin: user.isAdmin,
-                isStudent: user.isStudent,
+                // isStudent: user.isStudent,
                 isTutor: user.isTutor
             },
             'secret',
             {expiresIn : '1d'}
         )
+
+        
+  // set token as a cookie with the name 'jwt'
+  res.cookie('token', token, {
+    httpOnly: false,
+    // secure: true // set to true in production
+  });
        
         res.status(200).send({user: user.email , token: token}) 
 
@@ -93,14 +101,22 @@ const loginUser =  async (req,res) => {
 
 //register user
 const registerUser = async (req,res)=>{
+
+    const userExist = await UserModel.findOne({email: req.body.email})
+    // const secret = process.env.secret;
+    if(userExist) {
+        return res.status(403).send('The user already exist');
+    }
+
     let user = new UserModel({
         // name: req.body.name,
         username: req.body.username,
         email: req.body.email,
         passwordHash: bcrypt.hashSync(req.body.password, 10),
+        phone: req.body.phone,
         isAdmin: req.body.isAdmin,
-        isStudent: req.body.isAdmin,
-        isTutor: req.body.isAdmin
+        // isStudent: req.body.isAdmin,
+        isTutor: req.body.isTutor
     })
     user = await user.save();
 

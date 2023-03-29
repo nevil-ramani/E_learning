@@ -19,18 +19,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
+    phone: {
+        type: String,
+        // required: true,
+    },
     isAdmin: {
         type: Boolean,
         default: false,
     },
-    isStudent: {
+    // isStudent: {
+    //     type: Boolean,
+    //     default: false,
+    // },
+    isTutor: {
         type: Boolean,
-        default: false,
-    },
-    istutor: {
-        type: Boolean,
-        default: false,
+        // default: false,  
     },
     
 });
