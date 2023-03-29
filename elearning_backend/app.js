@@ -35,7 +35,7 @@ dotenv.config()
 
 /////////middleware//////////
 //multer
-app.use(upload);
+// app.use(upload);
 //body-parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -79,15 +79,10 @@ app.get('/get/count', userController.totelUser)
 
 
 
-
-
-
-
-
 // Configure multer to handle file uploads
-const vidstorage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, 'public/videos');
   },
   filename: function (req, file, cb) {
     const filename = file.fieldname + Math.floor((Math.random() * 100) + 1) + Date.now() + path.extname(file.originalname); //file.originalname.toLowerCase().split(' ').join('-');
@@ -95,40 +90,36 @@ const vidstorage = multer.diskStorage({
   }
 });
 
-const uploadvideo = multer({ storage: vidstorage });
-
-
-// Define a schema for videos
-const videoSchema = new mongoose.Schema({
-  filename: String,
-  date: { type: Date, default: Date.now }
-});
-
-const Video = mongoose.model('Video', videoSchema);
-
-// Define a route for uploading videos
-app.post('/uploadvideo', uploadvideo.single('video'), (req, res) => {
-  const { filename } = req.file;
-
-  const video = new Video({
-    filename
+const uploadVid = multer({
+    storage: storage,
+    limits: { fileSize: 1024 * 1024 * 50 }, // 50 MB file size limit
   });
 
-  video.save()
-    .then(() => {
+
+
+// Define a route for uploading videos
+app.post('/videos', uploadVid.single('video'), (req, res) => {
+
+//   const { filename } = req.file;
+  
+//   const video = new Video({
+//     filename:filename
+//   });
+
+//   video.save()
+//     .then(() => {
       res.status(201).json({ message: 'Video uploaded successfully.' });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ message: 'Failed to upload video.' });
-    });
+    // })
+    // .catch((err) => {
+    //   console.error(err);
+    //   res.status(500).json({ message: 'Failed to upload video.' });
+    // });
 });
 
-// Start the server
+// // Start the server
 // app.listen(3000, () => {
 //   console.log('Server started on port 3000.');
 // });
-
 
 
 
