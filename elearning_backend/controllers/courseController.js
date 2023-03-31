@@ -18,6 +18,16 @@ const fetchCourses = async (req, res) => {
 }
 
 
+const fetchCoursebyid = async (req, res) => {
+    const id = req.params.id
+    const Course = await CourseModel.findById(id);
+
+    if (!Course) { res.json({ message: 'cours not found' }); }
+
+    res.send(Course);
+}
+
+
 
 //create course
 //post
@@ -92,6 +102,7 @@ const createCourse = async (req, res) => {
 
 module.exports = {
     fetchCourses: fetchCourses,
+    fetchCoursebyid: fetchCoursebyid,
     createCourse: createCourse,
     // updateMainTopic_id: updateMainTopic_id
 }

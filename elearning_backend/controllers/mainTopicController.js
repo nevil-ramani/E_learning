@@ -3,7 +3,30 @@ const CourseModel = require('../model/courseModel')
 const mongoose =require("mongoose")
 var id_1;
 var arrayOFmaintopic_id = [];
+mongoose.set('debug', true);
 
+
+
+
+//fetch all main topic with sub topic details'
+const fetchMainTopics = async (req, res) => {
+    const allMainTopic = await MainTopicModel.findById()
+
+    if (!allMainTopic) { res.json({ message: 'main topics not found' }); }
+
+    res.send(allMainTopic);
+}
+
+
+//fetch all main topic with sub topic details'
+const fetchMintopicBYid = async (req, res) => {
+    const id = req.params.id
+    const MainTopic = await MainTopicModel.findById(id)
+
+    if (!MainTopic) { res.json({ message: 'main topic not found' }); }
+
+    res.send(MainTopic);
+}
 
 //create mainTopic of the course
 //post
@@ -82,5 +105,7 @@ const updateMainTopic_id = (req, res, next) => {
 module.exports = {
     createMainTopic: createMainTopic,
     updateMainTopic_id:updateMainTopic_id,
-    fetchMainTopic_id:fetchMainTopic_id
+    fetchMainTopic_id:fetchMainTopic_id,
+    fetchMainTopics:fetchMainTopics,
+    fetchMintopicBYid:fetchMintopicBYid
 };

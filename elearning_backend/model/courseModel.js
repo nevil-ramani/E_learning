@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.set('debug', true);
 
 const courseSchema = new mongoose.Schema({
     title: String,
@@ -7,7 +8,7 @@ const courseSchema = new mongoose.Schema({
     tutor_name: String,
     mainTopic_id: {
         type: mongoose.Schema.Types.Array,
-        // ref: ''
+        ref: 'maintopicmodels'
        },
     // mainTopic_id: Array,
     is_featured: Boolean,

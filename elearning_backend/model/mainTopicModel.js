@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.set('debug', true);
 
 
 const mainTopicSchema = mongoose.Schema({
@@ -8,9 +9,11 @@ const mainTopicSchema = mongoose.Schema({
    },
 
    subTopic_id: {
-    type: mongoose.Schema.Types.Array,
-    // ref: ''
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'subTopicModel',
    },
+
+   
 
    course_id: {
     type: mongoose.Schema.Types.ObjectId,

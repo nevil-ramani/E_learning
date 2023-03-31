@@ -9,7 +9,7 @@ const subTopicSchema = mongoose.Schema({
 
    content_id: {
     type: mongoose.Schema.Types.ObjectId,
-    // ref: ''
+    ref: 'contentModel'
    },
 
    course_id: {
